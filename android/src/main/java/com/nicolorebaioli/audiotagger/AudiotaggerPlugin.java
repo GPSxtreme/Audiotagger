@@ -81,7 +81,7 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
             case "convertToMP3":
                 if (call.hasArgument("source") && call.hasArgument("target")) {
                     String source = call.argument("source");
-                    String target = call.argumnet("target");
+                    String target = call.argument("target");
                     result.success(convertToMP3(source, target));
                 } else
                     result.error("400", "Missing parameters", null);
