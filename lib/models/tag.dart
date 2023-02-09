@@ -1,7 +1,7 @@
 /// `Tag` class represent an ID3 Tag.
 /// It represent both ID3V1 and ID3V2 tags.
 class Tag {
-  /// Title of the track
+  /// name of the track
   String? title;
 
   /// Artist of the track
@@ -40,6 +40,18 @@ class Tag {
   /// Artwork path
   String? artwork;
 
+  /// copyright of song
+  String? copyright;
+
+  /// Song id
+  String? id;
+
+  ///Explicit content
+  String? explicitContent;
+
+  ///Does song have lyrics
+  String? hasLyrics;
+
   /// Default constructor
   Tag({
     this.title,
@@ -55,6 +67,10 @@ class Tag {
     this.albumArtist,
     this.year,
     this.artwork,
+    this.id,
+    this.hasLyrics,
+    this.copyright,
+    this.explicitContent
   });
 
   /// Create a `Tag` object from a `Map` of the tags.
@@ -72,6 +88,10 @@ class Tag {
     albumArtist = map["albumArtist"];
     year = map["year"];
     artwork = map["artwork"];
+    id = map["id"];
+    hasLyrics = map["hasLyrics"];
+    copyright = map["copyright"];
+    explicitContent = map["explicitContent"];
   }
 
   /// Get a `Map` of the tags from a `Tag` object.
@@ -90,6 +110,10 @@ class Tag {
       "albumArtist": albumArtist,
       "year": year,
       "artwork": artwork,
+      "id": id,
+      "hasLyrics" : hasLyrics,
+      "copyright" : copyright,
+      "explicitContent" : explicitContent
     };
   }
 }
