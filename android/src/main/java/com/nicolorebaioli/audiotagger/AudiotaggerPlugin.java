@@ -110,7 +110,7 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
         }
     }
 
-    public static void convertToMP3(String source, String target) throws IOException {
+    private static void convertToMP3(String source, String target) {
         try {
             ProcessBuilder builder = new ProcessBuilder(
                     "ffmpeg",
