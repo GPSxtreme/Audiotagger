@@ -164,7 +164,7 @@ public enum FieldKey {
     YEAR,
     // Application specific fields
     ID,
-    EXPLICITCONTENTS,
+    EXPLICITCONTENT,
     HASLYRICS,
     ;
 }
