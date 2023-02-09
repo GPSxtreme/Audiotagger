@@ -149,4 +149,15 @@ class Audiotagger {
   }) async {
     return AudioFile.fromMap((await readAudioFileAsMap(path: path))!);
   }
+
+  ///Method to convert incoming mp4 to mp3 file.
+  ///
+  ///[source]: The path of source mp4 file.
+  ///
+  ///[target]: The destination of output file.
+  Future<void> convertMp4ToMp3(
+      {required String source, required String target}) async {
+    return await _channel
+        .invokeMethod("convertToMP3", {"source": source, "target": target});
+  }
 }

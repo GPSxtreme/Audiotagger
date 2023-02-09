@@ -110,6 +110,22 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
         }
     }
 
+    public static void convertToMP3(String source, String target) throws IOException {
+        try {
+            ProcessBuilder builder = new ProcessBuilder(
+                    "ffmpeg",
+                    "-i", source,
+                    "-vn",
+                    "-c:a", "libmp3lame",
+                    "-q:a", "2",
+                    target);
+            Process process = builder.start();
+        } catch (Exception e) {
+            System.out.println("Error converting Mp4 to mp3");
+            e.printStackTrace();
+        }
+    }
+
     private boolean writeTags(String path, Map<String, String> map, String artwork) {
         try {
             File mp3File = new File(path);
