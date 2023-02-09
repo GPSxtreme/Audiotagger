@@ -156,7 +156,7 @@ public class MP3AudioHeader implements AudioHeader {
     public MP3AudioHeader(final File seekFile, long startByte) throws IOException, InvalidAudioFrameException {
         if (!seek(seekFile, startByte)) {
             // throw new
-            // InvalidAudioFrameException(ErrorMessage.NO_AUDIO_HEADER_FOUND.getMsg(seekFile.getName()));
+            InvalidAudioFrameException(ErrorMessage.NO_AUDIO_HEADER_FOUND.getMsg(seekFile.getName()));
         }
     }
 
