@@ -112,6 +112,7 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
 
     private boolean writeTags(String path, Map<String, String> map, String artwork) {
         try {
+            System.out.println("Started writing tags");
             File mp3File = new File(path);
             AudioFile audioFile = AudioFileIO.read(mp3File);
 
