@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-
 import org.jaudiotagger.StandardCharsets;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -116,18 +115,17 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
             File mp3File = new File(path);
             AudioFile audioFile = AudioFileIO.read(mp3File);
 
-            
             Tag newTag = audioFile.getTag();
-            if (newTag==null)
+            if (newTag == null)
                 throw new Exception("File tag not found");
-            
+
             // Convert ID3v1 tag to ID3v23
             if (audioFile instanceof MP3File) {
                 MP3File mp3 = (MP3File) audioFile;
                 if (mp3.hasID3v1Tag() && !mp3.hasID3v2Tag()) {
                     newTag = new ID3v23Tag(mp3.getID3v1Tag());
-                    mp3.setID3v1Tag(null);  // remove v1 tags
-                    mp3.setTag(newTag);     // add v2 tags
+                    mp3.setID3v1Tag(null); // remove v1 tags
+                    mp3.setTag(newTag); // add v2 tags
                 }
             }
 
@@ -143,6 +141,10 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
             Util.setFieldIfExist(newTag, FieldKey.ALBUM, map, "album");
             Util.setFieldIfExist(newTag, FieldKey.ALBUM_ARTIST, map, "albumArtist");
             Util.setFieldIfExist(newTag, FieldKey.YEAR, map, "year");
+            Util.setFieldIfExist(newTag, FieldKey.COPYRIGHT, map, "copyright");
+            Util.setFieldIfExist(newTag, FieldKey.ID, map, "id");
+            Util.setFieldIfExist(newTag, FieldKey.EXPLICITCONTENT, map, "explicitContent");
+            Util.setFieldIfExist(newTag, FieldKey.HASLYRICS, map, "hasLyrics");
 
             Artwork cover = null;
             // If field is null, it is ignored
@@ -161,7 +163,7 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
                         byte[] imageData = new byte[(int) imageFile.length()];
                         imageFile.read(imageData);
                         newTag.setField(((Mp4Tag) newTag).createArtworkField(imageData));
-                    }else if (newTag instanceof FlacTag) {
+                    } else if (newTag instanceof FlacTag) {
                         RandomAccessFile imageFile = new RandomAccessFile(new File(artwork), "r");
                         byte[] imageData = new byte[(int) imageFile.length()];
                         imageFile.read(imageData);
@@ -173,15 +175,17 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
                                 0,
                                 24,
                                 0));
-                    }else if (newTag instanceof VorbisCommentTag) {
+                    } else if (newTag instanceof VorbisCommentTag) {
                         RandomAccessFile imageFile = new RandomAccessFile(new File(artwork), "r");
                         byte[] imageData = new byte[(int) imageFile.length()];
                         imageFile.read(imageData);
                         char[] base64Data = Base64Coder.encode(imageData);
                         String base64image = new String(base64Data);
-                        newTag.setField(((VorbisCommentTag) newTag).createField(VorbisCommentFieldKey.COVERART, base64image));
-                        newTag.setField(((VorbisCommentTag) newTag).createField(VorbisCommentFieldKey.COVERARTMIME, "image/png"));
-                    }else {
+                        newTag.setField(
+                                ((VorbisCommentTag) newTag).createField(VorbisCommentFieldKey.COVERART, base64image));
+                        newTag.setField(((VorbisCommentTag) newTag).createField(VorbisCommentFieldKey.COVERARTMIME,
+                                "image/png"));
+                    } else {
                         cover = ArtworkFactory.createArtworkFromFile(new File(artwork));
                         newTag.setField(cover);
                     }
@@ -191,8 +195,8 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
             }
             audioFile.commit();
 
-            String[] urls = {path};
-            String[] mimes = {"audio/mpeg"};
+            String[] urls = { path };
+            String[] mimes = { "audio/mpeg" };
             MediaScannerConnection.scanFile(context, urls, mimes, new MediaScannerConnection.OnScanCompletedListener() {
                 @Override
                 public void onScanCompleted(String path, Uri uri) {
@@ -277,10 +281,13 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
         return null;
     }
 
-    enum Version {ID3V1, ID3V2}
+    enum Version {
+        ID3V1, ID3V2
+    }
 
     static class Util {
-        static void setFieldIfExist(Tag tag, FieldKey field, Map<String, String> map, String key) throws FieldDataInvalidException {
+        static void setFieldIfExist(Tag tag, FieldKey field, Map<String, String> map, String key)
+                throws FieldDataInvalidException {
             String value = map.get(key);
             // If field is null, it is ignored
             if (value != null) {
