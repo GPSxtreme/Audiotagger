@@ -5,11 +5,11 @@ package org.jaudiotagger.tag;
  *
  *
  *
- * This enumeration is used by subclasses to map from the common key to their implementation key, the keys
+ * This enumeration is used by subclasses to map from the common key to their
+ * implementation key, the keys
  * are grouped within EnumSets within Tag class.
  */
-public enum FieldKey
-{
+public enum FieldKey {
     ACOUSTID_FINGERPRINT,
     ACOUSTID_ID,
     ALBUM,
@@ -162,5 +162,9 @@ public enum FieldKey
     WORK,
     WORK_TYPE,
     YEAR,
+    // Application specific fields
+    ID,
+    EXPLICITCONTENTS,
+    HASLYRICS,
     ;
 }
