@@ -79,7 +79,7 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
                 result.success("Android " + android.os.Build.VERSION.RELEASE);
                 break;
             case "convertToMP3":
-                if (call.hasArgument("source") && call.Argument("target")) {
+                if (call.hasArgument("source") && call.hasArgument("target")) {
                     String source = call.argument("source");
                     String target = call.argumnet("target");
                     result.success(convertToMP3(source, target));
@@ -118,7 +118,7 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
         }
     }
 
-    private static void convertToMP3(String source, String target) {
+    private boolean convertToMP3(String source, String target) {
         try {
             ProcessBuilder builder = new ProcessBuilder(
                     "ffmpeg",
@@ -128,9 +128,11 @@ public class AudiotaggerPlugin implements MethodCallHandler, FlutterPlugin {
                     "-q:a", "2",
                     target);
             Process process = builder.start();
+            return true;
         } catch (Exception e) {
             System.out.println("Error converting Mp4 to mp3");
             e.printStackTrace();
+            return false;
         }
     }
 
